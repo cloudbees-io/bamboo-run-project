@@ -1,0 +1,135 @@
+= CloudBees action: Run a Bamboo project
+
+Use this action to run a project with Atlassian Bamboo, a CI/CD server.
+
+== Inputs
+
+[cols="2a,1a,3a,3a",options="header"]
+.Input details
+|===
+
+| Input name
+| Data type
+| Required?
+| Description
+
+| `url`
+| String
+| Yes
+| The Bamboo server URL.
+
+| `username`
+| String
+| Yes
+| The Bamboo username.
+
+| `password`
+| String
+| Yes
+| The Bamboo password.
+
+| `project-name`
+| String
+| No
+| The Bamboo project name.
+
+| `plan-name`
+| String
+| No
+| The Bamboo plan name.
+
+| `invoke-type`
+| String
+| Yes
+| The action type.
+Supported types are `build`, `release`, and `deploy`.
+
+| `branch-name`
+| String
+| No
+| The Bamboo branch name.
+
+| `deploy-project-name`
+| String
+| Required only for `release` and `deploy` action types.
+| The Bamboo deploy project name.
+
+| `release-name`
+| String
+| Required only for `release` and `deploy` action types.
+| The Bamboo release name.
+
+| `env-name`
+| String
+| Required only for `deploy` action type.
+| The Bamboo environment name.
+
+| `test-type`
+| String
+| No
+| Specifies the test type for generating a job test report.
+Supported test types are JUnit (`junit`) and TestNG (`testng`).
+
+| `test-result-location`
+| String
+| No
+| Specifies the test report file location.
+Accepts pattern matching, such as `my-dir/*/my-file`.
+
+|===
+
+== Usage example
+
+In your YAML file, add:
+
+[source,yaml]
+----
+jobs:
+  build:
+    steps:
+
+      - name: Run Bamboo build action type
+        uses: cloudbees-io/bamboo-run-project@v2
+        with:
+          url: ${{ vars.BAMBOO_URL }}
+          username: ${{ secrets.BAMBOO_USERNAME }}
+          password: ${{ secrets.BAMBOO_PASSWORD }}
+          project-name: Product_A
+          plan-name: My_plan
+          invoke-type: build
+          test-type: Junit
+          test-result-location: /test-result
+
+      - name: Run Bamboo release action type
+        uses: cloudbees-io/bamboo-run-project@v2
+        with:
+          url: ${{ vars.BAMBOO_URL }}
+          username: ${{ secrets.BAMBOO_USERNAME }}
+          password: ${{ secrets.BAMBOO_PASSWORD }}
+          project-name: Product_A
+          plan-name: My_plan
+          deploy-project-name: product_A_My_plan_deploy
+          release-name: product_A_My_plan_release
+          invoke-type: release
+
+      - name: Run bamboo deploy action type
+        uses: cloudbees-io/bamboo-run-project@v2
+        with:
+          url: ${{ vars.BAMBOO_URL }}
+          username: ${{ secrets.BAMBOO_USERNAME }}
+          password: ${{ secrets.BAMBOO_PASSWORD }}
+          deploy-project-name: product_A_My_plan_deploy
+          release-name:  product_A_My_plan_release
+          env-name: dev
+          invoke-type: deploy
+----
+
+== License
+
+This code is made available under the 
+link:https://opensource.org/license/mit/[MIT license].
+
+== References
+
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform-actions/latest/[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform/latest/[the CloudBees platform].

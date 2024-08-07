@@ -51,7 +51,7 @@ runs:
   steps:
     - id: run-bamboo-action
       name: run-bamboo-action
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/bamboo-actions:main-ca584a59add9e9251f0b5ec2b81846573af62ebc
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/bamboo-actions:main-fb90e8ca4ad12dda9adc938d4db971ae2d4eddad
       shell: sh
       env:        
         CONFIG_JSON: '{"metaInfo":{"url":"${{ inputs.url }}","toolType":"${{ inputs.invoke-type }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","projectName":"${{ inputs.project-name }}","planName":"${{ inputs.plan-name }}","branchName":"${{ inputs.branch-name }}","deployProjectName":"${{ inputs.deploy-project-name }}","releaseName":"${{ inputs.release-name }}","testType":"${{ inputs.test-type }}","fileName":"${{ inputs.test-result-location }}"},"envVariables":{"env-name":"${{ inputs.env-name }}"}}'   
